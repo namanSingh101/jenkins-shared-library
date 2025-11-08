@@ -1,4 +1,9 @@
-def call(String username, String password){
+def call(String credentialsId){
   echo "Login into Docker Hub"
-  sh "echo ${password} | docker login -u ${username} --password-stdin'
+  withCredentials([usernamePassword(credentialsId:credentialsId,usernameVariable:'DOCKERHUB_USR,passwordVariable:'DOCKERHUB_PSW')]){
+                sh """
+                     echo $DOCKERHUB_PSW | docker login -u $DOCKERHUB_USR --password-stdin
+                   """
+          }
+
 }
